@@ -9,6 +9,14 @@
     "start": "react-native start",
     "test": "jest"
   },
+  "codegenConfig": {
+     "name": "NativeLocalStorageSpec",
+     "type": "modules",
+     "jsSrcsDir": "localstorage",
+     "android": {
+       "javaPackageName": "com.examen_01"
+     }
+   },
   "dependencies": {
     "@react-native/new-app-screen": "0.83.0",
     "@react-navigation/native": "^7.1.31",
