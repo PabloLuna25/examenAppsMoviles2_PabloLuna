@@ -8,9 +8,9 @@ import {
 } from "react-native";
 import style_01 from "../styles/style_01";
 import axios from "axios";
-import Home from "./home";
 import {useNavigation} from '@react-navigation/native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import NativeLocalStorage from '../../localstorage/NativeLocalStorage';
 
 // Variables y métodos constantes para Login
 const URL = "https://fakestoreapi.com";
@@ -49,7 +49,8 @@ const Login = () => {
         if (data.token) {
         Alert.alert("Success", "Login successful!");
         console.log("TOKEN:", data.token);
-        navigation.replace("Home")
+        NativeLocalStorage.setItem(data.token, "authToken");
+        navigation.replace("Home");
       } else {
         Alert.alert("Login Failed", "Invalid credentials");
       }

@@ -10,6 +10,12 @@ import {
 import axios from "axios";
 import { Picker } from "@react-native-picker/picker";
 import homeStyle from "../styles/homeStyle"
+import NativeLocalStorage from "../../localstorage/NativeLocalStorage";
+import {useNavigation} from '@react-navigation/native';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useCart } from "../components/cartContext";
+
+
 
 interface Product {
   id: number;
@@ -24,16 +30,39 @@ interface Product {
   };
 }
 
+type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+  Cart: undefined,
+};
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Home"
+>;
+
 const Home = () => {
+  const { addToCart } = useCart();
+  const token = NativeLocalStorage?.getItem("authToken");
+  const navigation = useNavigation<NavigationProp>();
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
+  
 
-  // Load categories on mount
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  const handleLogout = async() => {
+    NativeLocalStorage.removeItem("authToken")
+    navigation.replace("Login")
+    console.log(NativeLocalStorage?.getItem("AuthToken"))
+  }
+
+  const handleCart = async() => {
+    navigation.navigate("Cart")
+  }
 
   const fetchCategories = async () => {
     try {
@@ -47,7 +76,6 @@ const Home = () => {
     }
   };
 
-  // Fetch products when category changes
   useEffect(() => {
     if (selectedCategory) {
       fetchProductsByCategory(selectedCategory);
@@ -82,7 +110,7 @@ const Home = () => {
         </Text>
       </View>
 
-      <TouchableOpacity style={homeStyle.addButton}>
+      <TouchableOpacity style={homeStyle.addButton} onPress={() => addToCart(item)}>
         <Text style={homeStyle.addButtonText}>Add to cart</Text>
       </TouchableOpacity>
     </View>
@@ -92,6 +120,24 @@ const Home = () => {
     <View style={homeStyle.container}>
       <Text style={homeStyle.header}>Fake Store</Text>
 
+      <TouchableOpacity
+        style={homeStyle.addButton}
+        onPress={handleLogout}
+      >
+        <Text style={homeStyle.addButtonText}>
+        Log Out
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={homeStyle.addButton}
+        onPress={handleCart}
+      >
+        <Text style={homeStyle.addButtonText}>
+        Go to cart
+        </Text>
+      </TouchableOpacity>
+      
       <Picker
         selectedValue={selectedCategory}
         onValueChange={(itemValue) => setSelectedCategory(itemValue)}
