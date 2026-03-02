@@ -7,8 +7,24 @@ import {
   Alert,
 } from "react-native";
 import style_01 from "../styles/style_01";
+import axios from "axios";
+import Home from "./home";
+import {useNavigation} from '@react-navigation/native';
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+// Variables y métodos constantes para Login
+const URL = "https://fakestoreapi.com";
+type RootStackParamList = {
+  Login: undefined;
+  Home: undefined;
+};
+type NavigationProp = NativeStackNavigationProp<
+  RootStackParamList,
+  "Login"
+>;
 
 const Login = () => {
+  const navigation = useNavigation<NavigationProp>();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -22,25 +38,18 @@ const Login = () => {
     try {
       setLoading(true);
 
-      const response = await fetch(
-        "https://fakestoreapi.com/auth/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username,
-            password,
-          }),
-        }
-      );
+      const response = await axios.post(URL+"/auth/login", {
+        username,
+        password,
+      });
 
-      const data = await response.json();
+      const data = await response.data;
+      //console.log(data);
 
-      if (data.token) {
+        if (data.token) {
         Alert.alert("Success", "Login successful!");
         console.log("TOKEN:", data.token);
+        navigation.replace("Home")
       } else {
         Alert.alert("Login Failed", "Invalid credentials");
       }

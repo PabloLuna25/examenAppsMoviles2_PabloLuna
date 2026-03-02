@@ -37,4 +37,4 @@ import { StyleSheet } from 'react-native';
                 },
 			});
 
-			export default style_01;
+            export default style_01;

@@ -10,21 +10,25 @@
     "test": "jest"
   },
   "codegenConfig": {
-     "name": "NativeLocalStorageSpec",
-     "type": "modules",
-     "jsSrcsDir": "localstorage",
-     "android": {
-       "javaPackageName": "com.examen_01"
-     }
-   },
+    "name": "NativeLocalStorageSpec",
+    "type": "modules",
+    "jsSrcsDir": "localstorage",
+    "android": {
+      "javaPackageName": "com.examen_01"
+    }
+  },
   "dependencies": {
+    "@react-native-picker/picker": "^2.11.4",
     "@react-native/new-app-screen": "0.83.0",
     "@react-navigation/native": "^7.1.31",
     "@react-navigation/native-stack": "^7.14.2",
+    "axios": "^1.13.6",
     "react": "19.2.0",
     "react-native": "0.83.0",
     "react-native-safe-area-context": "^5.7.0",
-    "react-native-screens": "^4.24.0"
+    "react-native-screens": "^4.24.0",
+    "react-redux": "^9.2.0",
+    "redux": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
